@@ -12,7 +12,7 @@ public class SocketMessageHandler implements Runnable {
 
     public SocketMessageHandler(Socket client) {
         try {
-            this.write = new PrintWriter(client.getOutputStream());
+            this.write = new PrintWriter(client.getOutputStream(),true);
             this.read = new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -7,7 +7,7 @@ class ClientDemo{
     public static Socket client;
     public static void main(String[] args) {
         try{
-            client = new Socket("127.0.0.1",8090);
+            client = new Socket("127.0.0.1",8980);
             System.out.println("connected!");
         }catch(Exception e){
             System.out.println("faild to connect");

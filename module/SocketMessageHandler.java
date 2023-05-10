@@ -32,20 +32,21 @@ public class SocketMessageHandler implements Runnable {
     public void run() {
         System.out.println("Thread Successfully Created!");
         System.out.println("Listen into incoming Message ...");
-        sendMessage("HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=\n");
         String message = "";
         while (message != null) {
             try {
                 message = receiveMessage();
                 if(message.startsWith("")){
                     String[] sec = message.split(" ", 2);
-                    sendMessage("HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=\n");
                 }
             } catch (IOException e) {
-                System.out.println("Client left the chat!");
+                System.out.println("Connection Failed: " + e.getMessage());
                 break;
             }
             System.out.println("New Message:" + message);
+            if(!message.equals("<<message received>>")){
+                sendMessage("<<message received>>");
+            }
         }
     }
 }

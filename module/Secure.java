@@ -5,17 +5,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class Secure {
-    public static String decodeMessage(String message){
+    public static String packetDecode(String message){
         // TODO: make an decode function
         return message;
     }
 
-    public static String encodeMessage(String decodedMessage){
+    public static String packetEncode(String decodedMessage){
         // TODO: encode, decoded string
         return decodedMessage;
     }
 
-    public static String sha1(String input) {
+    public static String sha1Encode(String input) {
 
         try {
 
@@ -36,5 +36,17 @@ public class Secure {
     public static String base64Encode(String text){
         String encodedString = Base64.getEncoder().encodeToString(text.getBytes());
         return encodedString;
+    }
+
+    public static String base64Decode(String text){
+        String decodedString = Base64.getDecoder().decode(text).toString();
+        return decodedString;
+    }
+
+    public static String handShakeSecret(String secret){
+        String outSecret = secret + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        outSecret = sha1Encode(outSecret);
+        outSecret = base64Encode(outSecret);
+        return outSecret;
     }
 }

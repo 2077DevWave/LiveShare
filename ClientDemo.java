@@ -20,7 +20,6 @@ class ClientDemo{
         String message;
         while((message = keyboard.nextLine()) != null){
             controller.sendMessage(message);
-            System.out.println("sended");
         }
     }
 }

@@ -21,11 +21,11 @@ public class SocketMessageHandler implements Runnable {
 
 
     public void sendMessage(String message) {
-        this.write.println(message);
+        this.write.println(Secure.packetEncode(message));
     }
 
     public String receiveMessage() throws IOException {
-        return this.read.readLine();
+        return Secure.packetDecode(this.read.readLine());
     }
 
     @Override

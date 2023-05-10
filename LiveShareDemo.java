@@ -9,7 +9,7 @@ public class LiveShareDemo {
             new Thread(server).start();
             System.out.println("Run Successfully!");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Server Error: " + e.getMessage());
         }
     }
 }

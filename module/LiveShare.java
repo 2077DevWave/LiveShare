@@ -16,7 +16,6 @@ public class LiveShare extends ServerSocket implements Runnable {
         while (isServerRunning) {
             try {
                 ClientHandler client = new ClientHandler(this.accept());
-                client.asyncReceiveMessage();
             } catch (IOException e) {
                 System.out.println("Server Shutdown ...");
             }

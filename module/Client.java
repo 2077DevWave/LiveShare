@@ -8,9 +8,4 @@ public class Client extends SocketMessageHandler{
         super(client);
         asyncReceiveMessage();
     }
-
-    private void asyncReceiveMessage(){
-        MessageReceiver receiver = new MessageReceiver();
-        new Thread(receiver).start();
-    }
 }

@@ -33,6 +33,11 @@ public class SocketMessageHandler {
 
     }
 
+    public void asyncReceiveMessage(){
+        MessageReceiver receiver = new MessageReceiver();
+        new Thread(receiver).start();
+    }
+
     public SocketMessageHandler(Socket client) {
         try {
             this.write = new PrintWriter(client.getOutputStream(), true);

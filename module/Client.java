@@ -6,6 +6,11 @@ public class Client extends SocketMessageHandler{
 
     public Client(Socket client) {
         super(client);
-        new Thread(this).start();
+        asyncReceiveMessage();
+    }
+
+    private void asyncReceiveMessage(){
+        MessageReceiver receiver = new MessageReceiver();
+        new Thread(receiver).start();
     }
 }

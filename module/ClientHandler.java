@@ -7,8 +7,10 @@ public class ClientHandler extends SocketMessageHandler{
 
     public ClientHandler(Socket client) {
         super(client);
-        System.out.println("New Client Connected!");
-        System.out.println("Starting new thread...");
-        new Thread(this).start();
+    }
+
+    public void asyncReceiveMessage(){
+        MessageReceiver receiver = new MessageReceiver();
+        new Thread(receiver).start();
     }
 }

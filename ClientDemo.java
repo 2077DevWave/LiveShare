@@ -10,7 +10,7 @@ class ClientDemo{
             client = new Socket("127.0.0.1",8980);
             System.out.println("connected!");
         }catch(Exception e){
-            System.out.println("faild to connect");
+            System.out.println("failed to connect");
         }
 
         Client controller = new Client(client);
@@ -21,5 +21,8 @@ class ClientDemo{
         while((message = keyboard.nextLine()) != null){
             controller.sendMessage(message);
         }
+        
+        keyboard.close();
+
     }
 }

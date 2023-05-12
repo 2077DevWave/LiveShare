@@ -7,28 +7,29 @@ import java.io.PrintWriter;
 import java.net.*;
 
 public class SocketMessageHandler extends MessageHandler {
-    private BufferedReader read;
-    private PrintWriter write;
+    private BufferedReader socketReader;
+    private PrintWriter socketWriter;
+    public String messagePrefix = "newMessage: ";
 
     public SocketMessageHandler(Socket client) {
         try {
-            this.write = new PrintWriter(client.getOutputStream(), true);
-            this.read = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            this.socketWriter = new PrintWriter(client.getOutputStream(), true);
+            this.socketReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void asyncReceiveMessage(){
-        MessageReceiver receiver = new MessageReceiver();
-        new Thread(receiver).start();
-    }
-
     public void sendMessage(String message) {
-        this.write.println(Secure.packetEncode(message));
+        this.socketWriter.println(Secure.packetEncode(message));
     }
 
     public String receiveMessage() throws IOException {
-        return Secure.packetDecode(this.read.readLine());
+        String message;
+        if (!(message = Secure.packetDecode(this.socketReader.readLine())).equals("message received!")){
+            sendMessage("message received!");
+        }
+        return messagePrefix + message;
     }
+
 }

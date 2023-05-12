@@ -7,6 +7,10 @@ public abstract class MessageHandler implements Runnable{
     public abstract String receiveMessage() throws IOException;
     public abstract void sendMessage(String message);
 
+    public void asyncReceiveMessage(){
+        new Thread(this).start();
+    }
+    
     @Override
     public void run() {
         System.out.println("Thread Successfully Created!");
@@ -19,10 +23,7 @@ public abstract class MessageHandler implements Runnable{
                 System.out.println("Connection Failed: " + e.getMessage());
                 break;
             }
-            System.out.println("New Message:" + message);
-            if (!message.equals("<<message received>>")) {
-                sendMessage("<<message received>>");
-            }
+            System.out.println(message);
         }
     }
 }

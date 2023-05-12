@@ -1,28 +1,27 @@
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-import module.Client;
+import module.SocketMessageHandler;
 
-class ClientDemo{
-    public static Socket client;
+public class ClientDemo {
+    private static Socket handler;
     public static void main(String[] args) {
-        try{
-            client = new Socket("127.0.0.1",8980);
-            System.out.println("connected!");
-        }catch(Exception e){
-            System.out.println("failed to connect");
+        try {
+            handler = new Socket("127.0.0.1", 8980);
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        Client controller = new Client(client);
+        SocketMessageHandler msg = new SocketMessageHandler(handler);
+        msg.messagePrefix = "Server: ";
+        msg.asyncReceiveMessage();
 
-        Scanner keyboard = new Scanner(System.in);
-
-        String message;
-        while((message = keyboard.nextLine()) != null){
-            controller.sendMessage(message);
+        Scanner input = new Scanner(System.in);
+        String message = "";
+        while (!(message = input.nextLine()).equals("exit")){
+            msg.sendMessage(message);
         }
-        
-        keyboard.close();
 
     }
 }

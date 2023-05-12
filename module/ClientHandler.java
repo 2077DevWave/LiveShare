@@ -10,6 +10,7 @@ public class ClientHandler extends SocketMessageHandler {
     public ClientHandler(Socket client) {
         super(client);
         this.handler = client;
+        this.messagePrefix = "Client: ";
         asyncReceiveMessage();
     }
 

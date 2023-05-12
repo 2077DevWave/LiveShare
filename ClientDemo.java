@@ -22,6 +22,6 @@ public class ClientDemo {
         while (!(message = input.nextLine()).equals("exit")){
             msg.sendMessage(message);
         }
-
+        input.close();
     }
 }

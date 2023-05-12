@@ -6,37 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
 
-public class SocketMessageHandler {
+public class SocketMessageHandler extends MessageHandler {
     private BufferedReader read;
     private PrintWriter write;
-
-    class MessageReceiver implements Runnable {
-
-        @Override
-        public void run() {
-            System.out.println("Thread Successfully Created!");
-            System.out.println("Listen into incoming Message ...");
-            String message = "";
-            while (message != null) {
-                try {
-                    message = receiveMessage();
-                } catch (IOException e) {
-                    System.out.println("Connection Failed: " + e.getMessage());
-                    break;
-                }
-                System.out.println("New Message:" + message);
-                if (!message.equals("<<message received>>")) {
-                    sendMessage("<<message received>>");
-                }
-            }
-        }
-
-    }
-
-    public void asyncReceiveMessage(){
-        MessageReceiver receiver = new MessageReceiver();
-        new Thread(receiver).start();
-    }
 
     public SocketMessageHandler(Socket client) {
         try {
@@ -45,6 +17,11 @@ public class SocketMessageHandler {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void asyncReceiveMessage(){
+        MessageReceiver receiver = new MessageReceiver();
+        new Thread(receiver).start();
     }
 
     public void sendMessage(String message) {

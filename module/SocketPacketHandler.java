@@ -2,15 +2,17 @@ package module;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.*;
 
 public class SocketPacketHandler extends PacketHandler {
-    // object to receive and read new messages from client stream
-    private BufferedReader socketReader;
-    // object to send message into socket stream
-    private PrintWriter socketWriter;
+    // object to receive and read new byte from client stream
+    private InputStream socketReader;
+    // object to send byte array into socket stream
+    private OutputStream socketWriter;
     // prefix to print in output message
     public String messagePrefix = "newMessage: ";
 
@@ -21,8 +23,8 @@ public class SocketPacketHandler extends PacketHandler {
      */
     public SocketPacketHandler(Socket client) {
         try {
-            this.socketWriter = new PrintWriter(client.getOutputStream(), true);
-            this.socketReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            this.socketWriter = client.getOutputStream();
+            this.socketReader = client.getInputStream();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -34,11 +36,16 @@ public class SocketPacketHandler extends PacketHandler {
      * @param message - message
      */
     public void sendPacket(String message) {
-        this.socketWriter.print(Secure.packetEncode(message.getBytes()));
+        sendPacket(message.getBytes());
     }
 
     public void sendPacket(byte[] message) {
-        this.socketWriter.print(Secure.packetEncode(message));
+        try {
+            this.socketWriter.write(Secure.packetEncode(message));
+            this.socketWriter.flush();
+        } catch (IOException e) {
+            System.out.println("Error sending packet: " + e.getMessage());
+        }
         System.out.println("Packet sent");
     }
 
@@ -49,7 +56,9 @@ public class SocketPacketHandler extends PacketHandler {
      */
     public byte[] receivedPacket() throws IOException {
         System.out.println("new packet received");
-        return Secure.packetDecode(this.socketReader.readLine().getBytes());
+        int nByte;
+        while ((nByte = socketReader.available()) == 0){}
+        return Secure.packetDecode(this.socketReader.readNBytes(nByte));
     }
 
 }

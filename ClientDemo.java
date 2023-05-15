@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-import module.SocketMessageHandler;
+import module.SocketPacketHandler;
 
 public class ClientDemo {
     private static Socket handler;
@@ -13,14 +13,14 @@ public class ClientDemo {
             System.out.println("Error: " + e.getMessage());
         }
 
-        SocketMessageHandler msg = new SocketMessageHandler(handler);
+        SocketPacketHandler msg = new SocketPacketHandler(handler);
         msg.messagePrefix = "Server: ";
         msg.asyncReceiveMessage();
 
         Scanner input = new Scanner(System.in);
         String message = "";
         while (!(message = input.nextLine()).equals("exit")){
-            msg.sendMessage(message);
+            msg.sendPacket(message);
         }
         input.close();
     }

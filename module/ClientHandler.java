@@ -2,7 +2,7 @@ package module;
 
 import java.net.Socket;
 
-public class ClientHandler extends SocketMessageHandler {
+public class ClientHandler extends SocketPacketHandler {
     // socket obj returned from SocketServer to handle user
     private Socket handler;
     // secret based on hash to decode and encode message

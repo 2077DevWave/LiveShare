@@ -1,12 +1,10 @@
 package module;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.*;
+import org.*;
 
 public class SocketPacketHandler extends PacketHandler {
     // object to receive and read new byte from client stream
@@ -57,8 +55,16 @@ public class SocketPacketHandler extends PacketHandler {
     public byte[] receivedPacket() throws IOException {
         System.out.println("new packet received");
         int nByte;
+        sendConfirmPacket();
         while ((nByte = socketReader.available()) == 0){}
         return Secure.packetDecode(this.socketReader.readNBytes(nByte));
     }
+
+    private void sendConfirmPacket(){
+        JSONObject jo = new JSONObject ();
+        jo.put ("firstName", "John");
+        jo.put ("lastName", "Doe");
+
+        System.out.println(jo.getString("firstName"));
 
 }

@@ -1,12 +1,13 @@
 package module;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-public abstract class MessageHandler implements Runnable{
+public abstract class PacketHandler implements Runnable{
     // method to receive new messages
-    public abstract String receiveMessage() throws IOException;
-    // method to send new messages
-    public abstract void sendMessage(String message);
+    public abstract byte[] receivedPacket() throws IOException;
+    // method to send new packets
+    public abstract void sendPacket(byte[] message);
 
     /**
      * running in other threads to receive new messages asynchronously
@@ -22,15 +23,17 @@ public abstract class MessageHandler implements Runnable{
     public void run() {
         System.out.println("Thread Successfully Created!");
         System.out.println("Listen into incoming Message ...");
-        String message = "";
-        while (message != null) {
+        byte[] message;
+        while (true) {
             try {
-                message = receiveMessage();
+                message = receivedPacket();
             } catch (IOException e) {
                 System.out.println("Connection Failed: " + e.getMessage());
                 break;
             }
-            System.out.println(message);
+            System.out.println(new String(message,StandardCharsets.UTF_8));
         }
     }
+
+    public void handlePacket(byte[] data){}
 }

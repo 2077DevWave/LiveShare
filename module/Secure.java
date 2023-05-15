@@ -11,7 +11,7 @@ public class Secure {
      * @param message - String message to decode
      * @return - decoded date
      */
-    public static String packetDecode(String message){
+    public static byte[] packetDecode(byte[] message){
         // TODO: make an decode algorithm
         return message;
     }
@@ -21,7 +21,7 @@ public class Secure {
      * @param decodedMessage - String message to encode
      * @return - encoded message
      */
-    public static String packetEncode(String decodedMessage){
+    public static byte[] packetEncode(byte[] decodedMessage){
         // TODO: encode, decoded algorithm
         return decodedMessage;
     }

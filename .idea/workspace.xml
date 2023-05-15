@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82c4323e-d974-4608-83b8-8e807710a30b" name="Changes" comment="" />
+    <list default="true" id="82c4323e-d974-4608-83b8-8e807710a30b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/module/SocketPacketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/module/SocketPacketHandler.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +25,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -33,6 +36,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683799301363</updated>
       <workItem from="1683799303490" duration="157000" />
+      <workItem from="1684175362526" duration="137000" />
     </task>
     <servers />
   </component>

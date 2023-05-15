@@ -55,8 +55,16 @@ public class SocketPacketHandler extends PacketHandler {
     public byte[] receivedPacket() throws IOException {
         System.out.println("new packet received");
         int nByte;
+        sendConfirmPacket();
         while ((nByte = socketReader.available()) == 0){}
         return Secure.packetDecode(this.socketReader.readNBytes(nByte));
     }
+
+    private void sendConfirmPacket(){
+        JSONObject jo = new JSONObject ();
+        jo.put ("firstName", "John");
+        jo.put ("lastName", "Doe");
+
+        System.out.println(jo.getString("firstName"));
 
 }

@@ -15,7 +15,8 @@ public abstract class PacketHandler implements Runnable {
         FILE(2),
         FILE_SLICE(3),
         PERMISSION(4),
-        AUTHENTICATE(5);
+        AUTHENTICATE(5),
+        USER(6);
 
         private int value;
 

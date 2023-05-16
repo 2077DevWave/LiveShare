@@ -21,9 +21,10 @@ public class LiveShare extends ServerSocket implements Runnable {
      */
     @Override
     public void run() {
+        Clients clientsHandler = new Clients();
         while (isServerRunning) {
             try {
-                new ClientHandler(this.accept());
+                clientsHandler.newClient(this.accept());
             } catch (IOException e) {
                 System.out.println("Server Shutdown ...");
             }

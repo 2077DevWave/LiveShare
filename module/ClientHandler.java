@@ -18,7 +18,7 @@ public class ClientHandler extends SocketPacketHandler {
         super(client);
         this.handler = client;
         this.messagePrefix = this.name;
-        asyncReceiveMessage();
+        asyncPacketReceiver();
     }
 
     /**

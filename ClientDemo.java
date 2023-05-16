@@ -15,12 +15,12 @@ public class ClientDemo {
 
         SocketPacketHandler msg = new SocketPacketHandler(handler);
         msg.messagePrefix = "Server: ";
-        msg.asyncReceiveMessage();
+        msg.asyncPacketReceiver();
 
         Scanner input = new Scanner(System.in);
         String message = "";
         while (!(message = input.nextLine()).equals("exit")){
-            msg.sendPacket(message);
+            msg.sendMessage(message);
         }
         input.close();
     }

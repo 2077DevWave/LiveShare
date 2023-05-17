@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 public class LiveShare extends ServerSocket implements Runnable {
     private boolean isServerRunning;
+    public static Clients clientsHandler;
 
     /**
      * a class to make a realtime connection based on WebSocket
@@ -21,9 +22,10 @@ public class LiveShare extends ServerSocket implements Runnable {
      */
     @Override
     public void run() {
+        clientsHandler = new Clients();
         while (isServerRunning) {
             try {
-                new ClientHandler(this.accept());
+                clientsHandler.newClient(this.accept());
             } catch (IOException e) {
                 System.out.println("Server Shutdown ...");
             }

@@ -1,7 +1,6 @@
 import module.*;
 
 import java.io.IOException;
-
 public class LiveShareDemo {
     public static void main(String[] args) {
         try{

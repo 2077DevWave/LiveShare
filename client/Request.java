@@ -1,4 +1,4 @@
-package module;
+package client;
 
 import java.time.LocalDateTime;
 import org.json.JSONObject;
@@ -12,11 +12,11 @@ public class Request {
      * @param Message the message you want to send
      * @return a JsonObject contain type, data, id
      */
-    public static JSONObject createMessageRequest(int fromUser, String Message) {
+    public static JSONObject createMessageRequest(int toUser, String Message) {
         JSONObject json = new JSONObject();
         json.put("request_type", PacketType.MESSAGE.getValue());
         json.put("request_id", createUniqRequestId());
-        json.put("from_user_id", fromUser);
+        json.put("to_user_id", toUser);
         json.put("message", Message);
         return json;
     }
@@ -26,12 +26,12 @@ public class Request {
      * @param fromUser - user send this request
      * @return a JsonObject contain request_type, permission_type, request_id, from_user_id
      */
-    public static JSONObject createUserPermissionRequest(int fromUser) {
+    public static JSONObject createUserPermissionRequest(int toUser) {
         JSONObject json = new JSONObject();
         json.put("request_type", PacketType.PERMISSION.getValue());
         json.put("permission_type", PacketType.USER.getValue());
         json.put("request_id", createUniqRequestId());
-        json.put("from_user_id", fromUser);
+        json.put("to_user_id", toUser);
         return json;
     }
 
@@ -44,6 +44,6 @@ public class Request {
         LocalDateTime time = LocalDateTime.now();
         int id = time.getYear() + time.getMonthValue() + time.getDayOfMonth() + time.getHour() + time.getMinute()
                 + time.getSecond() + time.getNano() + time.hashCode();
-        return Math.abs(id);
+        return id;
     }
 }

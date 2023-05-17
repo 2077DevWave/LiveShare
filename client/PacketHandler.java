@@ -1,4 +1,4 @@
-package module;
+package client;
 
 import java.io.IOException;
 import org.json.JSONObject;
@@ -6,12 +6,6 @@ import org.json.JSONObject;
 public abstract class PacketHandler implements Runnable {
     // method to receive new messages
     public abstract byte[] receivedPacket() throws IOException;
-
-    // method to send new packets
-    public abstract void sendPacket(byte[] message);
-
-    // method to receive user Id
-    public abstract int getId();
 
     public enum PacketType {
         MESSAGE(1),
@@ -44,16 +38,15 @@ public abstract class PacketHandler implements Runnable {
      * a Runnable method to receive new messages asynchronously
      */
     public void run() {
-        Logger.newLog("Thread Successfully Created!");
-        Logger.newLog("Listen into incoming Message ...");
+        System.out.println("Thread Successfully Created!");
+        System.out.println("Listen into incoming Message ...");
         JSONObject packet;
         while (true) {
             packet = null;
             try {
                 packet = toJsonObject(receivedPacket());
-                Logger.newLog("new packet received from " + getId());
             } catch (IOException e) {
-                Logger.newWarning("Failed to receive packet!");
+                System.out.println("Failed to receive packet!");
             }
             if (packet != null) {
                 handleRequest(packet);
@@ -78,23 +71,11 @@ public abstract class PacketHandler implements Runnable {
      */
     public void handleRequest(JSONObject packet) {
         if (packet.getInt("request_type") == PacketType.MESSAGE.getValue()) {
-            int destinationUserId = packet.getInt("to_user_id");
-            Logger.newLog("Request to send message into " + destinationUserId);
-            if (LiveShare.clientsHandler.userExist(destinationUserId)) {
-                LiveShare.clientsHandler.findUser(destinationUserId)
-                        .sendPacket(Request.createMessageRequest(getId(), packet.getString("message")));
-            } else {
-                // TODO: user not found
-                Logger.newError("user not found to send message request");
-            }
+            System.out.println("Client_" + packet.getInt("from_user_id") + ": " + packet.getString("message"));
         } else if (packet.getInt("request_type") == PacketType.PERMISSION.getValue()) {
-            ClientHandler desHandler;
-            if ((desHandler = LiveShare.clientsHandler.findUser(packet.getInt("to_user_id"))) != null) {
-                desHandler.sendPacket(Request.createUserPermissionRequest(getId()));
-            } else {
-                // TODO: user not found
-                Logger.newError("user not found to send permission request");
-            }
+            System.out.println("Client_" + packet.getInt("from_user_id") + ": User Need Permission");
+        }else{
+            System.out.println("Unknown Packet!");
         }
     }
 

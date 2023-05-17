@@ -3,12 +3,10 @@ package module;
 import java.net.Socket;
 
 public class ClientHandler extends SocketPacketHandler {
-    // socket obj returned from SocketServer to handle user
-    private Socket handler;
     // secret based on hash to decode and encode message
-    private int secret;
+    private int id;
     // client name
-    public String name = "Client: ";
+    public String Name = "Client: ";
 
     /**
      * its Receiving message with SocketMessageHandler and save client information
@@ -16,32 +14,17 @@ public class ClientHandler extends SocketPacketHandler {
      */
     public ClientHandler(Socket client) {
         super(client);
-        this.handler = client;
-        this.messagePrefix = this.name;
+        this.id = Request.createUniqRequestId();
         asyncPacketReceiver();
     }
 
-    /**
-     * Set optional client information
-     */
-    public void setClientVariable(){
-        secret = handler.hashCode();
+    @Override
+    public int getId() {
+        return this.id;
     }
 
-    /**
-     * get client handler as Socket object
-     * @return - Socket object
-     */
-    public Socket getHandler() {
-        return handler;
-    }
-
-    /**
-     * return secret based on hash for this client
-     * its an optional information so may be its 0 for some clients
-     * @return - hash code
-     */
-    public int getSECRET() {
-        return secret;
+    @Override
+    public String getName() {
+        return this.Name;
     }
 }

@@ -1,8 +1,9 @@
-package module;
+package server;
 
 import java.time.LocalDateTime;
 import org.json.JSONObject;
-import module.PacketHandler.PacketType;
+
+import server.PacketHandler.PacketType;
 
 public class Request {
 
@@ -43,7 +44,7 @@ public class Request {
     public static int createUniqRequestId() {
         LocalDateTime time = LocalDateTime.now();
         int id = time.getYear() + time.getMonthValue() + time.getDayOfMonth() + time.getHour() + time.getMinute()
-                + time.getSecond() + time.getNano() + time.hashCode();
+                + time.getSecond() + time.getNano();
         return Math.abs(id);
     }
 }

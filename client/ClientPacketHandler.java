@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import org.json.JSONObject;
 
-import module.Secure;
+import server.Secure;
 
 public class ClientPacketHandler extends PacketHandler {
     // object to receive and read new byte from client stream

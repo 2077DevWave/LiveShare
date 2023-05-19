@@ -69,6 +69,12 @@ public abstract class SocketPacketHandler extends PacketHandler {
     public byte[] receivedPacket() throws IOException {
         int nByte;
         while ((nByte = socketReader.available()) == 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } // wait until packet received
         return Secure.packetDecode(this.socketReader.readNBytes(nByte));
     }

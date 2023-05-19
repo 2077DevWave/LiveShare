@@ -1,7 +1,7 @@
 package server;
 
 public enum Config{
-    SERVER_IPV4("127.0.0.1"),
+    SERVER_IPV4("12.0.0.1"),
     SERVER_PORT(8980),
     SERVER_AUTH(0),
     NEED_HANDSHAKE(0),

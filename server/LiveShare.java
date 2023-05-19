@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 
 public class LiveShare extends ServerSocket implements Runnable {
@@ -13,7 +14,7 @@ public class LiveShare extends ServerSocket implements Runnable {
      * @throws IOException - if there is an error to create a Server
      */
     public LiveShare(int port) throws IOException {
-        super(port);
+        super(port, 0, Inet4Address.getByName(Config.SERVER_IPV4.getStrVal()));
         isServerRunning = true;
     }
 

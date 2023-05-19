@@ -4,7 +4,7 @@ import server.*;
 public class LiveShareDemo {
     public static void main(String[] args) {
         try{
-            LiveShare server = new LiveShare(8980);
+            LiveShare server = new LiveShare(Config.SERVER_PORT.getIntVal());
             new Thread(server).start();
             System.out.println("Run Successfully!");
         } catch (IOException e) {

@@ -3,12 +3,13 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import client.ClientPacketHandler;
+import server.Config;
 
 public class ClientDemo {
     public static void main(String[] args) {
         Socket connection = null;
         try {
-            connection = new Socket("127.0.0.1", 8980);
+            connection = new Socket(Config.SERVER_IPV4.getStrVal(), Config.SERVER_PORT.getIntVal());
         } catch (IOException e) {
             e.printStackTrace();
         }

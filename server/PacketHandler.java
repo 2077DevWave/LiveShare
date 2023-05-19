@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public abstract class PacketHandler implements Runnable {
@@ -68,7 +70,13 @@ public abstract class PacketHandler implements Runnable {
      * @return return JSONObject representation
      */
     public JSONObject toJsonObject(byte[] data) {
-        return new JSONObject(new String(data));
+        try{
+            return new JSONObject(new String(data));
+        }catch(JSONException e){
+            Logger.newWarning("Failed to cast into JSONObject " + e.getMessage());
+        }
+        return null;
+        
     }
 
     /**

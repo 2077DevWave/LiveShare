@@ -1,0 +1,2 @@
+javac LiveShareDemo.java
+java LiveShareDemo

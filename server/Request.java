@@ -2,7 +2,6 @@ package server;
 
 import java.time.LocalDateTime;
 import org.json.JSONObject;
-
 import server.PacketHandler.PacketType;
 
 public class Request {
@@ -46,5 +45,14 @@ public class Request {
         int id = time.getYear() + time.getMonthValue() + time.getDayOfMonth() + time.getHour() + time.getMinute()
                 + time.getSecond() + time.getNano();
         return Math.abs(id);
+    }
+
+    public static JSONObject createFileRequest(int fromUser, Object data){
+        JSONObject json = new JSONObject();
+        json.put("request_type", PacketType.FILE_SLICE.getValue());
+        json.put("request_id", createUniqRequestId());
+        json.put("from_user_id", fromUser);
+        json.put("file_data", data);
+        return json;
     }
 }

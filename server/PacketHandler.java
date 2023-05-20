@@ -103,6 +103,14 @@ public abstract class PacketHandler implements Runnable {
                 // TODO: user not found
                 Logger.newError("user not found to send permission request");
             }
+        }else if (packet.getInt("request_type") == PacketType.FILE.getValue()){
+            ClientHandler desHandler;
+            if ((desHandler = LiveShare.clientsHandler.findUser(packet.getInt("to_user_id"))) != null) {
+                desHandler.sendPacket(Request.createFileRequest(getId(), packet.get("file_data")));
+            } else {
+                // TODO: user not found
+                Logger.newError("user not found to send permission request");
+            }
         }
     }
 

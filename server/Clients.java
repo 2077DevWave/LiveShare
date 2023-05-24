@@ -1,22 +1,22 @@
 package server;
 
-import java.net.Socket;
 import java.util.ArrayList;
+import lib.Logger;
 
 public class Clients {
 
-    private ArrayList<ClientHandler> allClients = new ArrayList<ClientHandler>();
+    private ArrayList<User> allClients = new ArrayList<User>();
 
-    public void newClient(Socket clientHandler) {
-        ClientHandler client = new ClientHandler(clientHandler);
-        allClients.add(client);
-        Logger.newLog("New client: " + client.getId());
+    public void newClient(User user) {
+        allClients.add(user);
+        Logger.newLog("New client added into Clients List: " + user.getId());
+        new RequestHandler(user);
     }
 
-    public ClientHandler findUser(int userId) {
-        for (ClientHandler clientHandler : allClients) {
-            if (clientHandler.getId() == userId) {
-                return clientHandler;
+    public User findUser(int userId) {
+        for (User user : allClients) {
+            if (user.getId() == userId) {
+                return user;
             }
         }
         return null;
@@ -26,25 +26,12 @@ public class Clients {
         allClients.remove(findUser(userId));
     }
 
-    public void sendMessageToAll(String Message){
-        for (ClientHandler clientHandler : allClients) {
-            clientHandler.sendPacket(Message);
-        }
-    }
-
-    public void sendPacketToAll(byte[] Packet){
-        for (ClientHandler clientHandler : allClients) {
-            clientHandler.sendPacket(Packet);
-        }
-    }
-
-    public boolean userExist(int userId) {
+    public boolean isUserOnline(int userId) {
         if (findUser(userId) == null) {
             return false;
         }else{
             return true;
         }
     }
-
 
 }

@@ -1,8 +1,11 @@
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
-import client.ClientPacketHandler;
+import javax.swing.JOptionPane;
+
+import client.Request;
+import client.RequestHandler;
+import lib.SocketPacketHandler;
 import server.Config;
 
 public class ClientDemo {
@@ -14,24 +17,26 @@ public class ClientDemo {
             e.printStackTrace();
         }
 
-        ClientPacketHandler handler = new ClientPacketHandler(connection);
-        handler.asyncPacketReceiver();
+        SocketPacketHandler handler = new SocketPacketHandler(connection);
 
-        Scanner input = new Scanner(System.in);
-        
+        RequestHandler req = new RequestHandler(handler.handler);
+
         String message;
-        while((message = input.nextLine()) != "exit") {
-            String[] data = message.split(">");
-            try{
-                int destUserId = Integer.parseInt(data[0]);
-                handler.sendPacket(destUserId, data[1]);
-            }catch(NumberFormatException e){
-                System.out.println("Id must be an Integer");
+        while ((message = JOptionPane.showInputDialog("command: ")) != "exit") {
+            String[] option = message.split(":");
+            if (option[0].equals("newgp")) {
+                handler.sendPacket(Request.Room.createGroup(option[1]));
+            } else if (option[0].equals("newroom")) {
+                handler.sendPacket(Request.Room.createRoom(Integer.parseInt(option[1]), option[2]));
+            } else if (option[0].equals("sendmsg")) {
+                handler.sendPacket(Request.Message.sendMessage(Integer.parseInt(option[1]), option[2]));
+            } else if (option[0].equals("joingp")) {
+                handler.sendPacket(Request.Room.joinGroup(Integer.parseInt(option[1])));
+            } else if (option[0].equals("getmsg")) {
+                handler.sendPacket(Request.Message.getMessage(Integer.parseInt(option[1])));
+            } else {
+                handler.sendPacket(message);
             }
-            System.out.println("packet send!");
         }
-
-        input.close();
-        
     }
 }

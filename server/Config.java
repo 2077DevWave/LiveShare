@@ -3,17 +3,19 @@ package server;
 public enum Config{
     SERVER_IPV4("127.0.0.1"),
     SERVER_PORT(8980),
-    SERVER_AUTH(0),
-    NEED_HANDSHAKE(0),
-    MAX_SERVER_CONNECTIONS(10),
-    MAX_REQUEST_PER_CLIENT(1000),
-    MAX_REQUEST_PER_IP(1000),
-    MAX_PACKET_SIZE(8192),
-    MAX_FILE_SLICE_SIZE(4096)
-    ;
+    SERVER_AUTH(1),
+    // NEED_HANDSHAKE(0),
+    MAX_AUTH_RETRY(10),
+    // MAX_SERVER_CONNECTIONS(10),
+    // MAX_REQUEST_PER_CLIENT(1000),
+    // MAX_REQUEST_PER_IP(1000),
+    // MAX_PACKET_SIZE(8192),
+    // MAX_FILE_SLICE_SIZE(4096),
+    ROOM_USER_LIMIT(2),
+    GROUP_MEMBER_LIMIT(100);
 
-    public String strVal;
-    public int intVal;
+    private String strVal;
+    private int intVal;
 
     private Config(String val){
         this.strVal = val;

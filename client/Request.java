@@ -1,50 +1,64 @@
 package client;
 
-import java.time.LocalDateTime;
 import org.json.JSONObject;
-
-import server.PacketHandler.PacketType;
+import lib.RequestType;
 
 public class Request {
 
-    /**
-     * create a JSON object contain information about the message
-     * 
-     * @param Message the message you want to send
-     * @return a JsonObject contain type, data, id
-     */
-    public static JSONObject createMessageRequest(int toUser, String Message) {
-        JSONObject json = new JSONObject();
-        json.put("request_type", PacketType.MESSAGE.getValue());
-        json.put("request_id", createUniqRequestId());
-        json.put("to_user_id", toUser);
-        json.put("message", Message);
-        return json;
+    public class Auth {
+
+        public static String authInfo(int userID, String pass) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Server.AUTHENTICATE.getValue());
+            request.put("user_id", userID);
+            request.put("password", pass);
+            return request.toString();
+        }
+    
     }
 
-    /**
-     * create a JSON object contain information to get permissions from user
-     * @param fromUser - user send this request
-     * @return a JsonObject contain request_type, permission_type, request_id, from_user_id
-     */
-    public static JSONObject createUserPermissionRequest(int toUser) {
-        JSONObject json = new JSONObject();
-        json.put("request_type", PacketType.PERMISSION.getValue());
-        json.put("permission_type", PacketType.USER.getValue());
-        json.put("request_id", createUniqRequestId());
-        json.put("to_user_id", toUser);
-        return json;
+    public class Room {
+
+        public static String createRoom(int userID, String Name) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.CREATE_ROOM.getValue());
+            request.put("with", userID);
+            request.put("name", Name);
+            return request.toString();
+        }
+
+        public static String createGroup(String Name) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.CREATE_GROUP.getValue());
+            request.put("name", Name);
+            return request.toString();
+        }
+
+        public static String joinGroup(int groupID) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.JOIN_GROUP.getValue());
+            request.put("id", groupID);
+            return request.toString();
+        }
+    
     }
 
-    /**
-     * create uniq id based in time and hash
-     * 
-     * @return int uniq id
-     */
-    public static int createUniqRequestId() {
-        LocalDateTime time = LocalDateTime.now();
-        int id = time.getYear() + time.getMonthValue() + time.getDayOfMonth() + time.getHour() + time.getMinute()
-                + time.getSecond() + time.getNano();
-        return id;
+    public class Message {
+
+        public static String sendMessage(int roomID, String Message) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.SEND_MESSAGE.getValue());
+            request.put("id", roomID);
+            request.put("message", Message);
+            return request.toString();
+        }
+
+        public static String getMessage(int roomID) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.GET_ROOM_MESSAGES.getValue());
+            request.put("id", roomID);
+            return request.toString();
+        }
+    
     }
 }

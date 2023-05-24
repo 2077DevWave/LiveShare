@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 
+import lib.Logger;
+
 public class LiveShare extends ServerSocket implements Runnable {
     private boolean isServerRunning;
     public static Clients clientsHandler;
@@ -26,7 +28,13 @@ public class LiveShare extends ServerSocket implements Runnable {
         clientsHandler = new Clients();
         while (isServerRunning) {
             try {
-                clientsHandler.newClient(this.accept());
+                Authenticator auth = new Authenticator(this.accept());
+                Logger.newLog("new connection!");
+                User user;
+                if((user = auth.fullAuth()) != null) {
+                    Logger.newLog("authentication complete for " + user.getId());
+                    clientsHandler.newClient(user);
+                }
             } catch (IOException e) {
                 System.out.println("Server Shutdown ...");
             }

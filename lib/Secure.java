@@ -7,30 +7,32 @@ import java.util.Base64;
 public class Secure {
 
     /**
-     * to decode packet date received from client or server
-     * @param message - String message to decode
-     * @return - decoded date
-     */
+    * Decode a packet. This is a static method to avoid having to reimplement it in a subclass.
+    * 
+    * @param message - the packet to decode ( must be non - null
+    */
     public static byte[] packetDecode(byte[] message){
         // TODO: make an decode algorithm
         return message;
     }
 
     /**
-     * to encode packet date before send into client or server
-     * @param decodedMessage - String message to encode
-     * @return - encoded message
-     */
+    * Encodes a packet and returns the result. This is used to create a packet from a byte array that can be sent to the network
+    * 
+    * @param decodedMessage - the message to be
+    */
     public static byte[] packetEncode(byte[] decodedMessage){
         // TODO: encode, decoded algorithm
         return decodedMessage;
     }
 
     /**
-     * encode String into Sha1
-     * @param input - String to encode
-     * @return - Sha1 encoded string
-     */
+    * Encodes a string using SHA - 1. This is used to generate hashes that are valid for the password and other data that can be stored in the database
+    * 
+    * @param input - The string to be encoded
+    * 
+    * @return The SHA - 1 encoded string with 0's at the begining if it isn't 32
+    */
     public static String sha1Encode(String input) {
 
         try {
@@ -39,6 +41,7 @@ public class Secure {
             byte[] messageDigest = md.digest(input.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
             String hashtext = no.toString(16);
+            // Generate a hashtext string for the current hashtext.
             while (hashtext.length() < 32) {
                 hashtext = "0" + hashtext;
             }
@@ -50,30 +53,36 @@ public class Secure {
     }
 
     /**
-     * encode String into Base64 encoded string
-     * @param text - normal string
-     * @return - String encoded into base64
-     */
+    * Encodes a string using Base64. This is a convenience method that uses the default encoding for the platform.
+    * 
+    * @param text - The text to encode. Must not be null.
+    * 
+    * @return The encoded text. Never null but may be empty if text is null or contains non - ASCII characters
+    */
     public static String base64Encode(String text){
         String encodedString = Base64.getEncoder().encodeToString(text.getBytes());
         return encodedString;
     }
 
     /**
-     * decode string encoded as Base64
-     * @param text - encoded string
-     * @return - decoded string
-     */
+    * Decodes Base64 data and returns the decoded string. This is useful for decoding data that was encoded with #base64Encode ( String )
+    * 
+    * @param text - The text to decode.
+    * 
+    * @return The decoded text or null if the text was null or not encoded with Base64. Note that a null return does not imply that the input was valid
+    */
     public static String base64Decode(String text){
         String decodedString = Base64.getDecoder().decode(text).toString();
         return decodedString;
     }
 
     /**
-     * create handshake Secret value to make Secure connection
-     * @param secret - Secret received from client handshake
-     * @return - return Secret
-     */
+    * Takes a secret and handshakes it with SHA1 and base64. This is used to encrypt and decrypt the secret
+    * 
+    * @param secret - The secret to be encrypted
+    * 
+    * @return The encrypted and base64 version of the secret that was passed in as a parameter to this method ( in this case it is the same
+    */
     public static String handShakeSecret(String secret){
         String outSecret = secret + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
         outSecret = sha1Encode(outSecret);

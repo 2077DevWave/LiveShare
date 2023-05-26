@@ -19,12 +19,22 @@ import lib.Error.UserNotExistsException;
 public class RequestHandler extends SocketPacketHandler implements Runnable{
     private User userHandler;
 
+    /**
+     * Constructs a new RequestHandler object for a given user and starts a new thread.
+     *
+     * @param user The user associated with this RequestHandler
+     */
     public RequestHandler(User user) {
         super(user.getHandler().handler);
         userHandler = user;
         new Thread(this).start();
     }
 
+    /**
+     * Continuously listens for incoming packets from the user and handles them accordingly.
+     * If a packet is received, it is logged and passed to the method that handles incoming requests.
+     * If an IOException is caught, the user is removed from the list of connected clients.
+     */
     @Override
     public void run() {
         try {
@@ -39,6 +49,18 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
         }
     }
 
+    /**
+     * Handles incoming requests from clients and performs the appropriate actions based on the request type.
+     *
+     * @param packet The incoming request packet in JSON format.
+     * @throws JSONException if the packet cannot be converted to a JSONObject.
+     * @throws UserNotAccessIntoRoomException if the user does not have access to the requested room.
+     * @throws RoomNotExistsException if the requested room does not exist.
+     * @throws RoomAlreadyExistsException if the requested room already exists.
+     * @throws UserNotExistsException if the requested user does not exist.
+     * @throws OperationFailedException if the requested operation fails.
+     * @throws PermissionDeniedException if the user does not have permission to perform the requested operation.
+     */
     public void handelIncomingRequest(String packet) {
         try{
             JSONObject json = new JSONObject(packet);

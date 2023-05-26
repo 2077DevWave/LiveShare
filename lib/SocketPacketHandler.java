@@ -28,12 +28,24 @@ public class SocketPacketHandler{
         }
     }
 
+    /**
+    * Sends a packet to the server. This is a blocking call so the connection will be closed when the server returns
+    * 
+    * @param message - The message to send
+    */
     public void sendPacket(String message){
         socketWriter.println(message);
     }
 
+    /**
+    * Receives and returns the next packet from the server. This method blocks until a packet is received or the connection is closed.
+    * 
+    * 
+    * @return the next packet from the server or null if there are no more packets to be received from the server
+    */
     public String receivedPacket() throws IOException{
         String packet;
+        // Returns the next line from the socket.
         while((packet = this.socketReader.readLine()) != null){
             return packet;
         }

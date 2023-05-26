@@ -21,16 +21,18 @@ public class LiveShare extends ServerSocket implements Runnable {
     }
 
     /**
-     * its a Runnable class and you should run it in a separate thread to work correctly
-     */
+    * Starts the server. This method is called in its own thread to listen for clients and authenticate them until the server is
+    */
     @Override
     public void run() {
         clientsHandler = new Clients();
+        // This method is called by the server to start the server.
         while (isServerRunning) {
             try {
                 Authenticator auth = new Authenticator(this.accept());
                 Logger.newLog("new connection!");
                 User user;
+                // if the authentication is complete
                 if((user = auth.fullAuth()) != null) {
                     Logger.newLog("authentication complete for " + user.getId());
                     clientsHandler.newClient(user);
@@ -42,9 +44,10 @@ public class LiveShare extends ServerSocket implements Runnable {
     }
 
     /**
-     * its used to shutdown the server
-     */
+    * Shuts down the server. This is a no - op if the server is already closed. It does not throw an exception
+    */
     public void shutDown() {
+        // Closes the server and closes the server.
         if (!this.isClosed()) {
             isServerRunning = false;
             try {
@@ -55,4 +58,5 @@ public class LiveShare extends ServerSocket implements Runnable {
 
         }
     }
+
 }

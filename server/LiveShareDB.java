@@ -11,6 +11,13 @@ import lib.Logger;
 
 public class LiveShareDB extends DataBase {
 
+    /**
+    * Adds a new user to the database. This is used to add new users to the database when they are created
+    * 
+    * @param Name - The name of the user
+    * @param pass - Pass The word of the user ( can be blank )
+    * @param Rule - The rule of the user ( 0 = admin 1 = admin
+    */
     public static void newUser(String Name, String pass, int Rule) {
         try {
             insertQuery("INSERT INTO `users`(`pass`, `name`, `rule`) VALUES ('" + pass + "','" + Name + "','" + Rule
@@ -22,6 +29,12 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Creates a new room with the given name and user limit. It does not check if the room already exists
+    * 
+    * @param Name - the name of the room
+    * @param UserLimit - the number of users in the room ( 0 = unlimited
+    */
     public static void newRoom(String Name, int UserLimit) {
         try {
             insertQuery("INSERT INTO `room`(`name`, `user_limit`) VALUES ('" + Name + "',"
@@ -32,6 +45,12 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Adds a user to a group. Does not check if the user is already in the group. This is used for joining a group
+    * 
+    * @param userID - the id of the user to add
+    * @param groupID - the id of the group to add the user
+    */
     public static void addUserIntoRoom(int userID, int groupID) {
         try {
             insertQuery("INSERT INTO `group_member`(group_id,user_id) select " + groupID + "," + userID
@@ -43,6 +62,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Adds a message into a group. This is used to send messages from a user to a group.
+    * 
+    * @param groupID - ID of the group to add the message to
+    * @param userID - ID of the user to add the message to
+    * @param Message - Message to add to the user's group
+    */
     public static void addMessageIntoRoom(int groupID, int userID, String Message) {
         try {
             insertQuery("INSERT INTO `group_message`(`user_id`, `group_id`, `message`) VALUES (" + userID + ","
@@ -54,12 +80,20 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Get all messages from a group. This is used to send messages to the group that are in the room
+    * 
+    * @param groupID - the id of the group
+    * 
+    * @return a JSONArray of message from the group in the format { " from " : user_id " message " : message
+    */
     public static JSONArray getRoomMessage(int groupID) throws SQLException {
         try {
             ResultSet res = selectQuery(
                     "SELECT * FROM `group_message` WHERE group_id = " + groupID + " ORDER BY date ASC");
             Logger.newLog("all message from group " + groupID + " received successfully");
             JSONArray result = new JSONArray();
+            // Returns the next message from the response.
             while (res.next()) {
                 JSONObject message = new JSONObject();
                 message.put("from", res.getInt("user_id"));
@@ -73,6 +107,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Checks if a room exists in the database. This is used to determine if a group is in the database
+    * 
+    * @param groupID - the id of the group to check
+    * 
+    * @return true if the group exists false if it doesn't or an error occurs during the check ( in which case false is returned
+    */
     public static boolean isRoomExists(int groupID) {
         try {
             ResultSet res = selectQuery("SELECT COUNT(*) != 0 AS room_exists FROM room WHERE id = " + groupID);
@@ -83,6 +124,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Checks if a user exists in the database. This is used to check if a user is logged in
+    * 
+    * @param userID - the id of the user to check
+    * 
+    * @return true if the user exists false if it doesn't or an error occurs during the check ( in which case false is returned
+    */
     public static boolean isUserExists(int userID) {
         try {
             ResultSet res = selectQuery("SELECT COUNT(*) != 0 AS user_exists FROM users WHERE id = " + userID);
@@ -93,6 +141,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Returns the number of members in a group. This is used to determine how many rooms are occupied by a group
+    * 
+    * @param groupID - ID of group to check
+    * 
+    * @return int number of members in the group or - 1 if something goes wrong during the check ( in which case the error will be logged
+    */
     public static int roomMembersCount(int groupID) {
         try {
             ResultSet res = selectQuery(
@@ -104,6 +159,14 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Checks if a user is in a group. This is used to check if a user is part of a group
+    * 
+    * @param userID - the id of the user
+    * @param groupID - the id of the group
+    * 
+    * @return true if the user is in the group false if not or if there is an error in the database
+    */
     public static boolean isUserInGroup(int userID, int groupID) {
         try {
             ResultSet res = selectQuery("SELECT COUNT(*) != 0 AS room_exists FROM `group_member` WHERE group_id = "
@@ -116,6 +179,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Get the password associated with a user from the database. This is used to authenticate the user when logging in
+    * 
+    * @param userID - the id of the user
+    * 
+    * @return the password or null if not
+    */
     public static String getUserPassword(int userID) {
         try {
             ResultSet res = selectQuery("SELECT pass FROM `users` WHERE id = " + userID);
@@ -126,6 +196,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Get the rule associated with a user from the database. This is used to determine if a user is allowed to edit their account
+    * 
+    * @param userID - the id of the user
+    * 
+    * @return the rule associated with the
+    */
     public static int getUserRule(int userID) {
         try {
             ResultSet res = selectQuery("SELECT rule FROM `users` WHERE id = " + userID);
@@ -136,6 +213,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Get the id of a room in the database. This is used to determine if a room is open
+    * 
+    * @param Name - the name of the room
+    * 
+    * @return the id of the room or - 1 if not found in the database or error in the name is
+    */
     public static int getRoomId(String Name){
         try {
             ResultSet res = selectQuery("SELECT id FROM `room` WHERE name = '" + Name + "'");
@@ -146,6 +230,13 @@ public class LiveShareDB extends DataBase {
         }
     }
 
+    /**
+    * Gets the name of a room from the database. This is used to determine the name of the room
+    * 
+    * @param RoomID - the id of the room
+    * 
+    * @return the name of the room or null if there is an error in the database or the room doesn't
+    */
     public static String getRoomName(int RoomID) {
         try {
             ResultSet res = selectQuery("SELECT name FROM `room` WHERE id = '" + RoomID + "'");

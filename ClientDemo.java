@@ -19,7 +19,7 @@ public class ClientDemo {
 
         SocketPacketHandler handler = new SocketPacketHandler(connection);
 
-        RequestHandler req = new RequestHandler(handler.handler);
+        new RequestHandler(handler.handler);
 
         String message;
         while ((message = JOptionPane.showInputDialog("command: ")) != "exit") {

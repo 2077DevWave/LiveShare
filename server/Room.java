@@ -8,7 +8,6 @@ import lib.Error.RoomNotExistsException;
 
 public class Room {
     private int Id;
-    private int userLimit;
 
     /**
      * Constructs a Room object with the given ID if it exists in the LiveShare database.

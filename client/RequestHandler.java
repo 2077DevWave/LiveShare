@@ -14,12 +14,10 @@ import lib.RequestType;
 import lib.SocketPacketHandler;
 
 public class RequestHandler extends SocketPacketHandler implements Runnable {
-    private Socket userHandler;
     public boolean isAuth = false;
 
     public RequestHandler(Socket socketHandler) {
         super(socketHandler);
-        this.userHandler = socketHandler;
         new Thread(this).start();
     }
 
@@ -52,7 +50,6 @@ public class RequestHandler extends SocketPacketHandler implements Runnable {
             JSONObject json = new JSONObject(packet);
             int type = json.getInt("type");
             if (type == RequestType.Server.AUTHENTICATE.getValue()) {
-                // RequestType. Server. AUTHATE. getValue
                 int errCode = json.getInt("err");
                 if (errCode == RequestType.Server.AUTHENTICATE_NO_ERROR.getValue()) {
                 }

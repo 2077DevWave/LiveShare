@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "LoginPage",
+            "request": "launch",
+            "mainClass": "client.LoginPage",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
             "name": "test",
             "request": "launch",
             "mainClass": "test",

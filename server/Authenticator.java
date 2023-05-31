@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import lib.Logger;
@@ -54,6 +55,8 @@ public class Authenticator {
             } catch (IOException e) {
                 Logger.newError("Failed to read authentication -> Stream : " + e.getMessage());
                 return -1;
+            }catch(JSONException e){
+                Logger.newError("can`t convert Request into JsonObject -> " + e.getMessage());
             }
         }
         Logger.newLog("authentication failed because user get retry limit");

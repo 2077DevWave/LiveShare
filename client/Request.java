@@ -71,6 +71,11 @@ public class Request {
             return request.toString();
         }
     
+        public static String getAllGroupList(){
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Client.LIST_OF_GROUPS.getValue());
+            return request.toString();
+        }
     }
 
     public class Message {

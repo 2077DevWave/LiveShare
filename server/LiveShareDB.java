@@ -94,12 +94,12 @@ public class LiveShareDB extends DataBase {
             Logger.newLog("all message from group " + groupID + " received successfully");
             JSONArray result = new JSONArray();
             // Returns the next message from the response.
-            while (res.next()) {
+            do {
                 JSONObject message = new JSONObject();
                 message.put("from", res.getInt("user_id"));
                 message.put("message", res.getString("message"));
                 result.put(message);
-            }
+            } while (res.next());
             return result;
         } catch (Exception e) {
             Logger.newWarning("failed to get message from group " + groupID + " -> " + e.getMessage());
@@ -244,6 +244,26 @@ public class LiveShareDB extends DataBase {
         } catch (Exception e) {
             Logger.newWarning("failed to get room name with id " + RoomID + " DB -> " + e.getMessage());
             return null;
+        }
+    }
+
+    public static JSONArray allUserGroup(int userID) throws SQLException {
+        try {
+            ResultSet res = selectQuery(
+                    "SELECT group_id FROM `group_member` WHERE user_id = " + userID + " ORDER BY group_id ASC");
+            Logger.newLog("all group list for user " + userID + " find successfully");
+            JSONArray result = new JSONArray();
+            // Returns the next message from the response.
+            do{
+                JSONObject Groups = new JSONObject();
+                Groups.put("id", res.getInt("group_id"));
+                Groups.put("name", getRoomName(res.getInt("group_id")));
+                result.put(Groups);
+            }while (res.next());
+            return result;
+        } catch (Exception e) {
+            Logger.newWarning("failed to get user Group list for user " + userID + " -> " + e.getMessage());
+            throw new SQLException(e);
         }
     }
 }

@@ -12,7 +12,8 @@ public enum Config{
     // MAX_PACKET_SIZE(8192),
     // MAX_FILE_SLICE_SIZE(4096),
     ROOM_USER_LIMIT(2),
-    GROUP_MEMBER_LIMIT(100);
+    GROUP_MEMBER_LIMIT(100),
+    SHOW_USER_NAME(1);
 
     private String strVal;
     private int intVal;

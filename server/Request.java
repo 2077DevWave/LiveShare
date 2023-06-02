@@ -88,6 +88,9 @@ public class Request {
          *         room.
          */
         public static String allRoomMessage(int roomID, JSONArray Messages) {
+            if(Messages == null){
+                Messages = new JSONArray();
+            }
             JSONObject request = new JSONObject();
             request.put("type", RequestType.Server.ALL_ROOM_MESSAGES.getValue());
             request.put("room_id", roomID);
@@ -112,6 +115,17 @@ public class Request {
     
     }
 
+    class Group {
+
+        public static String userGroupList(JSONArray groups) {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Server.USER_GROUP_LIST.getValue());
+            request.put("groups", groups.toString());
+            return request.toString();
+        }
+    
+    }
+
     class Other {
 
         /**
@@ -128,6 +142,11 @@ public class Request {
             return request.toString();
         }
 
+        public static String Success() {
+            JSONObject request = new JSONObject();
+            request.put("type", RequestType.Server.SUCCESS.getValue());
+            return request.toString();
+        }
     }
 
 }

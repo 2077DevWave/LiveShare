@@ -1,10 +1,13 @@
 package server;
 
+import java.sql.SQLException;
+
 import org.json.JSONArray;
 
 import lib.Logger;
 import lib.SocketPacketHandler;
 import lib.Error;
+import lib.Error.OperationFailedException;
 import lib.Error.RoomAlreadyExistsException;
 import lib.Error.RoomNotExistsException;
 import lib.Error.UserNotAccessIntoRoomException;
@@ -101,6 +104,20 @@ public class User {
             return new Room(Room).getAllMessages();
         } else {
             throw new Error.UserNotAccessIntoRoomException();
+        }
+    }
+
+    public JSONArray getUserRoomList() throws UserNotExistsException,OperationFailedException{
+        if(LiveShareDB.isUserExists(Id)){
+            JSONArray Groups;
+            try {
+                Groups = LiveShareDB.allUserGroup(Id);
+            } catch (SQLException e) {
+                throw new OperationFailedException();
+            }
+            return Groups;
+        }else{
+            throw new UserNotExistsException();
         }
     }
 }

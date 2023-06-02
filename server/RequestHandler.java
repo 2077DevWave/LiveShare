@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +71,7 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
                 int RoomId = json.getInt("id");
                 String message = json.getString("message");
                 userHandler.SendMessage(RoomId, message);
+                super.sendPacket(Request.Other.Success());
             }
             else if(type == RequestType.Client.GET_ROOM_MESSAGES.getValue()){
                 // id
@@ -81,6 +83,7 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
                 int userID = json.getInt("with");
                 String name = json.getString("name");
                 userHandler.CreateRoom(name, userID);
+                super.sendPacket(Request.Other.Success());
             }
             else if(type == RequestType.Client.CREATE_GROUP.getValue()){
                 // name
@@ -88,6 +91,7 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
                 if(LiveShareDB.getUserRule(userHandler.getId()) < 3){
                     PremiumUser user = (PremiumUser) userHandler;
                     user.createGroup(name);
+                    super.sendPacket(Request.Other.Success());
                 }else{
                     throw new Error.PermissionDeniedException();
                 }
@@ -98,11 +102,17 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
                 if(LiveShareDB.getUserRule(userHandler.getId()) < 3){
                     PremiumUser user = (PremiumUser) userHandler;
                     user.joinGroup(id);
+                    super.sendPacket(Request.Other.Success());
                 }else{
                     throw new Error.PermissionDeniedException();
                 }
-            }
-            else{
+            }else if(type == RequestType.Client.LIST_OF_GROUPS.getValue()){
+                JSONArray groups = userHandler.getUserRoomList();
+                super.sendPacket(Request.Group.userGroupList(groups));
+            }else if(type == RequestType.Client.LIST_OF_GROUPS.getValue()){
+                JSONArray groups = userHandler.getUserRoomList();
+                super.sendPacket(Request.Group.userGroupList(groups));
+            }else{
                 Logger.newWarning("unknown type " + type);
             }
         }catch(JSONException e){

@@ -3,7 +3,8 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-import client.Request;
+import client.Dashboard;
+import client.LoginPage;
 import client.RequestHandler;
 import lib.SocketPacketHandler;
 import server.Config;
@@ -19,24 +20,14 @@ public class ClientDemo {
 
         SocketPacketHandler handler = new SocketPacketHandler(connection);
 
-        new RequestHandler(handler.handler);
+        RequestHandler reqHandler = new RequestHandler(handler.handler);
 
-        String message;
-        while ((message = JOptionPane.showInputDialog("command: ")) != "exit") {
-            String[] option = message.split(":");
-            if (option[0].equals("newgp")) {
-                handler.sendPacket(Request.Room.createGroup(option[1]));
-            } else if (option[0].equals("newroom")) {
-                handler.sendPacket(Request.Room.createRoom(Integer.parseInt(option[1]), option[2]));
-            } else if (option[0].equals("sendmsg")) {
-                handler.sendPacket(Request.Message.sendMessage(Integer.parseInt(option[1]), option[2]));
-            } else if (option[0].equals("joingp")) {
-                handler.sendPacket(Request.Room.joinGroup(Integer.parseInt(option[1])));
-            } else if (option[0].equals("getmsg")) {
-                handler.sendPacket(Request.Message.getMessage(Integer.parseInt(option[1])));
-            } else {
-                handler.sendPacket(message);
-            }
-        }
+        if (new LoginPage(reqHandler).Auth() == false) {
+            JOptionPane.showMessageDialog(null, "login failed! Please login again or try later.", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        };
+
+        Dashboard Panel = new Dashboard(reqHandler);
+        Panel.setVisible(true);
     }
 }

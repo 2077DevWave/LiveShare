@@ -5,6 +5,7 @@ public class RequestType {
     public enum Server{
         NEW_MESSAGE(10),
         ALL_ROOM_MESSAGES(11),
+        USER_GROUP_LIST(12),
         AUTHENTICATE(20),
         AUTHENTICATE_SUCCESS(21),
         AUTHENTICATE_WRONG_USERNAME(22),
@@ -17,7 +18,8 @@ public class RequestType {
         ROOM_ALREADY_EXIST(103),
         OPERATION_FAILED(104),
         USER_NOT_ACCESS_INTO_ROOM(105),
-        PERMISSION_DENIED(106);
+        PERMISSION_DENIED(106),
+        SUCCESS(200);
 
     
         private int value;
@@ -37,7 +39,9 @@ public class RequestType {
         CREATE_ROOM(30),
         GET_ROOM_MESSAGES(31),
         CREATE_GROUP(40),
-        JOIN_GROUP(41);        
+        JOIN_GROUP(41),
+        LIST_OF_GROUPS(42),
+        GET_USER_NAME(50);
 
         private int value;
     

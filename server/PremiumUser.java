@@ -39,7 +39,7 @@ public class PremiumUser extends User{
      * @throws RoomAlreadyExistsException if a group with the given name already exists.
      * @throws OperationFailedException if the operation fails for any other reason.
      */
-    public Boolean createGroup(String Name) throws RoomAlreadyExistsException, OperationFailedException {
+    public void createGroup(String Name) throws RoomAlreadyExistsException, OperationFailedException {
         if (!LiveShareDB.isRoomExists(LiveShareDB.getRoomId(Name))) {
             LiveShareDB.newRoom(Name, Config.GROUP_MEMBER_LIMIT.getIntVal());
         } else {
@@ -49,7 +49,6 @@ public class PremiumUser extends User{
 
         if (LiveShareDB.getRoomId(Name) != -1) {
             Logger.newLog("Room created successfully with name " + Name);
-            return true;
         } else {
             throw new Error.OperationFailedException();
         }

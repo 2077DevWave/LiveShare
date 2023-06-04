@@ -47,7 +47,7 @@ public class Dashboard extends JFrame {
                 String gName = JOptionPane.showInputDialog(Frame,"Group Name");
                 if(gName != null) {
                     Connection.sendPacket(Request.Room.createGroup(gName));
-                    JSONObject response = Connection.LastPacket();
+                    JSONObject response = Connection.lastResponsePacket();
                     if(response.getInt("type") == RequestType.Server.SUCCESS.getValue()){
                         JOptionPane.showMessageDialog(Frame, "Group SuccessFully Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     }else if(response.getInt("type") == RequestType.Server.EXCEPTION.getValue()){
@@ -67,7 +67,7 @@ public class Dashboard extends JFrame {
                 String SecondUserId = JOptionPane.showInputDialog(Frame,"With User Id");
                 if(Name != null && SecondUserId != null){
                     Connection.sendPacket(Request.Room.createRoom(Integer.parseInt(SecondUserId),Name));
-                    JSONObject response = Connection.LastPacket();
+                    JSONObject response = Connection.lastResponsePacket();
                     if(response.getInt("type") == RequestType.Server.SUCCESS.getValue()){
                         JOptionPane.showMessageDialog(Frame, "Room SuccessFully Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     }else if(response.getInt("type") == RequestType.Server.EXCEPTION.getValue()){
@@ -84,17 +84,17 @@ public class Dashboard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle new room button click
-                String groupId = JOptionPane.showInputDialog(Frame,"Group Id");
-                if(groupId != null){
-                    Connection.sendPacket(Request.Room.joinGroup(Integer.parseInt(groupId)));
-                    JSONObject response = Connection.LastPacket();
+                String groupName = JOptionPane.showInputDialog(Frame,"Group Name");
+                if(groupName != null){
+                    Connection.sendPacket(Request.Room.joinGroup(groupName));
+                    JSONObject response = Connection.lastResponsePacket();
                     if(response.getInt("type") == RequestType.Server.SUCCESS.getValue()){
                         JOptionPane.showMessageDialog(Frame, "SuccessFully Join the Group", "Success", JOptionPane.INFORMATION_MESSAGE);
                     }else if(response.getInt("type") == RequestType.Server.EXCEPTION.getValue()){
                         JOptionPane.showMessageDialog(Frame, RequestHandler.getErrorTypeMessage(response.getInt("error")), "Error", JOptionPane.ERROR_MESSAGE);
                     };
                 }else{
-                    JOptionPane.showMessageDialog(Frame, "Room Name or second user id Cant be Empty", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(Frame, "Group Name cant be empty!", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
 
             }

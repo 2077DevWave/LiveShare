@@ -15,7 +15,7 @@ public class ClientDemo {
         try {
             connection = new Socket(Config.SERVER_IPV4.getStrVal(), Config.SERVER_PORT.getIntVal());
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Cant connect into Server!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         SocketPacketHandler handler = new SocketPacketHandler(connection);

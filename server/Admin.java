@@ -1,9 +1,13 @@
 package server;
 
+import java.sql.SQLException;
+
 import org.json.JSONArray;
 
 import lib.SocketPacketHandler;
+import lib.Error.OperationFailedException;
 import lib.Error.RoomNotExistsException;
+import lib.Error.UserNotExistsException;
 
 public class Admin extends PremiumUser {
 
@@ -26,6 +30,21 @@ public class Admin extends PremiumUser {
     */
     public JSONArray getRoomMessage(int Room) throws RoomNotExistsException {
         return new Room(Room).getAllMessages();
+    }
+
+    @Override
+    public JSONArray getUserRoomList() throws UserNotExistsException,OperationFailedException{
+        if(LiveShareDB.isUserExists(getId())){
+            JSONArray Groups;
+            try {
+                Groups = LiveShareDB.allGroup();
+            } catch (SQLException e) {
+                throw new OperationFailedException();
+            }
+            return Groups;
+        }else{
+            throw new UserNotExistsException();
+        }
     }
 
 }

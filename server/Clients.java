@@ -1,6 +1,7 @@
 package server;
 
 import java.util.ArrayList;
+
 import lib.Logger;
 
 public class Clients {
@@ -52,7 +53,6 @@ public class Clients {
     * @return true if the user is online false if it is not or if the user is not in the appointment
     */
     public boolean isUserOnline(int userId) {
-        // Checks if the user is a member of the user s account.
         if (findUser(userId) == null) {
             return false;
         }else{
@@ -60,4 +60,7 @@ public class Clients {
         }
     }
 
+    public ArrayList<User> getUsers() {
+        return allClients;
+    }
 }

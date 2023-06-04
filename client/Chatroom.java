@@ -19,7 +19,7 @@ public class Chatroom extends JFrame {
 
     public Chatroom(int roomID) {
         this.roomID = roomID;
-        setTitle("Chatroom - Room #"+roomID);
+        setTitle("Chatroom - Room #" + roomID);
         setSize(400, 300);
         setLocationRelativeTo(null);
 
@@ -29,11 +29,10 @@ public class Chatroom extends JFrame {
         JScrollPane scrollPane = new JScrollPane(chatArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
         JSONArray messages = getRoomMessage();
-        if(messages != null) {
+        if (messages != null) {
             ShowMessage(messages);
-        }else{
+        } else {
             chatArea.append("Failed to get room messages!");
         }
 
@@ -71,36 +70,45 @@ public class Chatroom extends JFrame {
         if (!message.isEmpty()) {
             messageField.setText("");
             RequestHandler.spHandler.sendPacket(Request.Message.sendMessage(roomID, message));
-            JSONObject response = RequestHandler.spHandler.LastPacket();
-            if(response.getInt("type") == RequestType.Server.SUCCESS.getValue()){
-                chatArea.append("You: " + message + "\n");
-            }else if(response.getInt("type") == RequestType.Server.EXCEPTION.getValue()){
+            JSONObject response = RequestHandler.spHandler.lastResponsePacket();
+            if (response.getInt("type") == RequestType.Server.SUCCESS.getValue()) {
+            } else if (response.getInt("type") == RequestType.Server.EXCEPTION.getValue()) {
                 RequestHandler.getErrorTypeMessage(response.getInt("error"));
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Unknown Response!", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
 
-    private JSONArray getRoomMessage(){
+    private JSONArray getRoomMessage() {
         RequestHandler.spHandler.sendPacket(Request.Message.getMessage(roomID));
-        JSONObject response = RequestHandler.spHandler.LastPacket();
-        if(response.getInt("type") == RequestType.Server.ALL_ROOM_MESSAGES.getValue()){
+        JSONObject response = RequestHandler.spHandler.lastResponsePacket();
+        if (response.getInt("type") == RequestType.Server.ALL_ROOM_MESSAGES.getValue()) {
             return new JSONArray(response.getString("message"));
-        }else if(response.getInt("type") == RequestType.Server.EXCEPTION.getValue()){
+        } else if (response.getInt("type") == RequestType.Server.EXCEPTION.getValue()) {
             RequestHandler.getErrorTypeMessage(response.getInt("error"));
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Unknown Response!", "Warning", JOptionPane.WARNING_MESSAGE);
         }
         return null;
     }
 
-    private void ShowMessage(JSONArray roomMessage){
+    private void ShowMessage(JSONArray roomMessage) {
+        chatArea.setText("");
         roomMessage.forEach(e -> {
             JSONObject message = new JSONObject(e.toString());
             int senderID = message.getInt("from");
             String content = message.getString("message");
-            chatArea.append("User_" + senderID+": "+content+"\n");
+            chatArea.append("User_" + senderID + ": " + content + "\n");
         });
     }
+
+    public void ShowMessage(int From, String Message) {
+        chatArea.append("User_" + From + ": " + Message + "\n");
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
 }

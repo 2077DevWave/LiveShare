@@ -105,9 +105,10 @@ public class Request {
          * @param Messages The message being sent.
          * @return A JSON string representing the new message request.
          */
-        public static String newMessage(int roomID, String Messages) {
+        public static String newMessage(int roomID, int From, String Messages) {
             JSONObject request = new JSONObject();
             request.put("type", RequestType.Server.NEW_MESSAGE.getValue());
+            request.put("from", From);
             request.put("room_id", roomID);
             request.put("message", Messages);
             return request.toString();

@@ -54,13 +54,6 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
      * Handles incoming requests from clients and performs the appropriate actions based on the request type.
      *
      * @param packet The incoming request packet in JSON format.
-     * @throws JSONException if the packet cannot be converted to a JSONObject.
-     * @throws UserNotAccessIntoRoomException if the user does not have access to the requested room.
-     * @throws RoomNotExistsException if the requested room does not exist.
-     * @throws RoomAlreadyExistsException if the requested room already exists.
-     * @throws UserNotExistsException if the requested user does not exist.
-     * @throws OperationFailedException if the requested operation fails.
-     * @throws PermissionDeniedException if the user does not have permission to perform the requested operation.
      */
     public void handelIncomingRequest(String packet) {
         try{
@@ -76,7 +69,12 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
             else if(type == RequestType.Client.GET_ROOM_MESSAGES.getValue()){
                 // id
                 int roomID = json.getInt("id");
-                super.sendPacket(Request.Message.allRoomMessage(roomID, userHandler.getRoomMessage(roomID)));
+                if(LiveShareDB.getUserRule(userHandler.getId()) < 2){
+                    Admin master = new Admin(userHandler.getId(), userHandler.getHandler());
+                    super.sendPacket(Request.Message.allRoomMessage(roomID, master.getRoomMessage(roomID)));
+                }else{
+                    super.sendPacket(Request.Message.allRoomMessage(roomID, userHandler.getRoomMessage(roomID)));
+                }
             }
             else if(type == RequestType.Client.CREATE_ROOM.getValue()){
                 // with , name
@@ -98,20 +96,23 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
             }
             else if(type == RequestType.Client.JOIN_GROUP.getValue()){
                 // id
-                int id = json.getInt("id");
+                String name = json.getString("name");
                 if(LiveShareDB.getUserRule(userHandler.getId()) < 3){
                     PremiumUser user = (PremiumUser) userHandler;
-                    user.joinGroup(id);
+                    user.joinGroup(LiveShareDB.getRoomId(name));
                     super.sendPacket(Request.Other.Success());
                 }else{
                     throw new Error.PermissionDeniedException();
                 }
             }else if(type == RequestType.Client.LIST_OF_GROUPS.getValue()){
-                JSONArray groups = userHandler.getUserRoomList();
-                super.sendPacket(Request.Group.userGroupList(groups));
-            }else if(type == RequestType.Client.LIST_OF_GROUPS.getValue()){
-                JSONArray groups = userHandler.getUserRoomList();
-                super.sendPacket(Request.Group.userGroupList(groups));
+                if(LiveShareDB.getUserRule(userHandler.getId()) < 2){
+                    Admin master = new Admin(userHandler.getId(), userHandler.getHandler());
+                    JSONArray groups = master.getUserRoomList();
+                    super.sendPacket(Request.Group.userGroupList(groups));
+                }else{
+                    JSONArray groups = userHandler.getUserRoomList();
+                    super.sendPacket(Request.Group.userGroupList(groups));
+                }
             }else{
                 Logger.newWarning("unknown type " + type);
             }
@@ -137,4 +138,5 @@ public class RequestHandler extends SocketPacketHandler implements Runnable{
             super.sendPacket(Request.Other.Exception(RequestType.Server.PERMISSION_DENIED.getValue()));
         }
     }
+
 }

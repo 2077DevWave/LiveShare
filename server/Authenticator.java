@@ -104,7 +104,7 @@ public class Authenticator {
     * Returns the user that is authenticated. This is a convenience method that calls #getAuth () and then passes the result to #createUserHandler ( int ).
     * 
     * 
-    * @return the user or null if there is no authentification to the user or the user could not be
+    * @return the user or null if there is no authentication to the user or the user could not be
     */
     public User fullAuth(){
         int userID;

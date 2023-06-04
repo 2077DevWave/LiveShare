@@ -85,6 +85,11 @@ public class User {
         if (LiveShareDB.isUserInGroup(getId(), Room)) {
             Logger.newLog("send message into group " + Room + "from " + getId() + " as " + Message);
             LiveShareDB.addMessageIntoRoom(Room, getId(), Message);
+            try {
+                Room room = new Room(Room);
+                room.sendMessageInRoomOnline(this.Id,Message);
+            } catch (RoomNotExistsException e) {
+            }
         } else {
             throw new Error.UserNotAccessIntoRoomException();
         }

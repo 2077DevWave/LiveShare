@@ -41,6 +41,7 @@ public class LoginPage extends JFrame{
         });
 
         status = new JTextArea("",1,20);
+        status.setEditable(false);
 
         add(usernameLabel);
         add(usernameField);
@@ -55,7 +56,7 @@ public class LoginPage extends JFrame{
     public Boolean Auth(){
 
         do{
-            JSONObject json = Connection.LastPacket();
+            JSONObject json = Connection.lastResponsePacket();
             int errCode = json.getInt("err");
             if (errCode == RequestType.Server.AUTHENTICATE_NO_ERROR.getValue()) {
             }

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import org.json.JSONArray;
 
 import lib.Logger;
+import lib.SocketPacketHandler;
 import lib.Error.RoomNotExistsException;
 
 public class Room {
@@ -55,5 +56,14 @@ public class Room {
      */
     public Boolean isUserInRoom(int userID) {
         return LiveShareDB.isUserInGroup(userID, getId());
+    }
+
+    public void sendMessageInRoomOnline(int From, String Message){
+        for(User client : LiveShare.clientsHandler.getUsers()){
+            if(isUserInRoom(client.getId())){
+                SocketPacketHandler handler = client.getHandler();
+                handler.sendPacket(Request.Message.newMessage(this.Id, From, Message));
+            }
+        }
     }
 }

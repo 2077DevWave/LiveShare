@@ -8,10 +8,12 @@ import org.json.JSONObject;
 import lib.RequestType;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GroupList extends JFrame {
 
     private JList<String> groupList;
+    public static ArrayList<Chatroom> openedRoom = new ArrayList<Chatroom>();
 
     public GroupList() {
         setTitle("Group List");
@@ -46,6 +48,7 @@ public class GroupList extends JFrame {
                             String[] group = selectedGroup.split("-");
                             int roomID = Integer.parseInt(group[0]); 
                             Chatroom chatRoom = new Chatroom(roomID);
+                            GroupList.openedRoom.add(chatRoom);
                             chatRoom.setVisible(true);
                         }
                     });
@@ -64,7 +67,7 @@ public class GroupList extends JFrame {
 
     private JSONArray allUserGroup(){
         RequestHandler.spHandler.sendPacket(Request.Room.getAllGroupList());
-        JSONObject response = RequestHandler.spHandler.LastPacket();
+        JSONObject response = RequestHandler.spHandler.lastResponsePacket();
         if(response != null){
             if(response.getInt("type") == RequestType.Server.USER_GROUP_LIST.getValue()){
                 return new JSONArray(response.getString("groups"));

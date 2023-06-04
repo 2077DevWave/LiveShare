@@ -266,4 +266,24 @@ public class LiveShareDB extends DataBase {
             throw new SQLException(e);
         }
     }
+
+    public static JSONArray allGroup() throws SQLException {
+        try {
+            ResultSet res = selectQuery(
+                    "SELECT * FROM `room` ORDER BY `room`.`id` ASC");
+            Logger.newLog("all group list get successfully");
+            JSONArray result = new JSONArray();
+            // Returns the next message from the response.
+            do{
+                JSONObject Groups = new JSONObject();
+                Groups.put("id", res.getInt("id"));
+                Groups.put("name", res.getString("name"));
+                result.put(Groups);
+            }while (res.next());
+            return result;
+        } catch (Exception e) {
+            Logger.newWarning("failed to get all group list  -> " + e.getMessage());
+            throw new SQLException(e);
+        }
+    }
 }

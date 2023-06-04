@@ -64,10 +64,10 @@ public class Request {
         * 
         * @return A JSON string representing the join request. See RFC 6265 for details on the format of the JSON
         */
-        public static String joinGroup(int groupID) {
+        public static String joinGroup(String groupName) {
             JSONObject request = new JSONObject();
             request.put("type", RequestType.Client.JOIN_GROUP.getValue());
-            request.put("id", groupID);
+            request.put("name", groupName);
             return request.toString();
         }
     

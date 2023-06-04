@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LiveShare.iml" filepath="$PROJECT_DIR$/LiveShare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/LiveShare.iml" filepath="$PROJECT_DIR$/.idea/LiveShare.iml" />
     </modules>
   </component>
 </project>

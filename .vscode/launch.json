@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GroupList",
+            "request": "launch",
+            "mainClass": "client.GroupList",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
+            "name": "Dashboard",
+            "request": "launch",
+            "mainClass": "client.Dashboard",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
+            "name": "ChatroomGUI",
+            "request": "launch",
+            "mainClass": "client.ChatroomGUI",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
+            "name": "LoginPage",
+            "request": "launch",
+            "mainClass": "client.LoginPage",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "test",
+            "projectName": "LiveShare_19f9ca6"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

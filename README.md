@@ -57,7 +57,7 @@ In the LiveShare App, several classes are used to manage the different component
 
 ### Server Package
 
-  - Description: 
+  - Description: include all server side classes
   
   - Classes:
       - Admin:
@@ -111,7 +111,7 @@ In the LiveShare App, several classes are used to manage the different component
 
 ### Client Package
 
-- Description: This class represents a client connected to the LAN Message Transfer App. It allows users to send and 
+- Description: include all Client side classes
 
 - Classes:
     - Chatroom:
@@ -140,7 +140,7 @@ In the LiveShare App, several classes are used to manage the different component
 
 ### Lib Package
 
-- Description: This class represents a message exchanged between clients.
+- Description: 
 
 - Classes:
     

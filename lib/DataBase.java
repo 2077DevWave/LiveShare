@@ -1,6 +1,9 @@
 package lib;
 
 import java.sql.Statement;
+
+import server.Config;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,15 +21,15 @@ public class DataBase {
         Connection conn = null;  
         try {  
             // db parameters  
-            String url = "jdbc:mysql://localhost:3306/liveshare";  
+            String url = "jdbc:mysql://"+Config.MYSQL_IPV4.getStrVal()+":"+Config.MYSQL_PORT.getStrVal()+"/"+Config.MYSQL_DATABASE.getStrVal();
             // create a connection to the database  
-            conn = DriverManager.getConnection(url,"root","");  
+            conn = DriverManager.getConnection(url,Config.MYSQL_USERNAME.getStrVal(),Config.MYSQL_PASSWORD.getStrVal());
               
-            Logger.newLog("Connection to SQL has been established.");  
+            Logger.newLog("Connection to SQL has been established.");
 
             return conn;
               
-        } catch (SQLException e) {  
+        } catch (SQLException e) {
             Logger.newError("DataBase -> " + e.getMessage());
             throw new SQLException(e);
         }

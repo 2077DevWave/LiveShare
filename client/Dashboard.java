@@ -20,6 +20,7 @@ public class Dashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
+        setIconImage(new ImageIcon("D:\\Projects\\JAVA learn\\LiveShare\\client\\Image\\3845868.png").getImage());
 
         // Create buttons
         JButton newGroupButton = new JButton("New Group");

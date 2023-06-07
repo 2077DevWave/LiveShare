@@ -20,17 +20,21 @@ public class LoginPage extends JFrame{
         setTitle("Login Page");
         setAlwaysOnTop(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setSize(300, 500);
         setLocationRelativeTo(null);
-        setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+        setIconImage(new ImageIcon("D:\\Projects\\JAVA learn\\LiveShare\\client\\Image\\3256783.png").getImage());
+        // setBackground(new Color(ERROR, HEIGHT, ALLBITS, ABORT));
 
-        JLabel usernameLabel = new JLabel("Username:");
+        // create items
+        JLabel topImage = new JLabel(new ImageIcon("D:\\Projects\\JAVA learn\\LiveShare\\client\\Image\\2847017.png"));
+        JLabel usernameLabel = new JLabel("نام کاربری:");
         JTextField usernameField = new JTextField(20);
-
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("رمز عبور:");
         JPasswordField passwordField = new JPasswordField(20);
-
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton();
+        status = new JTextArea("",1,20);
+        
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,15 +44,37 @@ public class LoginPage extends JFrame{
             }
         });
 
-        status = new JTextArea("",1,20);
+        // customize items
         status.setEditable(false);
+        usernameField.setMinimumSize(new Dimension(200, 50));
+        usernameField.setToolTipText("نام کاربری فقط شامل اعداد است.");
+        passwordField.setMinimumSize(new Dimension(200, 50));
+        usernameLabel.setFont(new Font("Andalus",1, 17));
+        passwordLabel.setFont(new Font("Andalus",1, 17));
+        loginButton.setMaximumSize(new Dimension(20, 20));
+        loginButton.setIcon(new ImageIcon("D:\\Projects\\JAVA learn\\LiveShare\\client\\Image\\3518736.png"));
+        topImage.setHorizontalAlignment(SwingConstants.CENTER);
+        
 
-        add(usernameLabel);
-        add(usernameField);
-        add(passwordLabel);
-        add(passwordField);
-        add(loginButton);
-        add(status);
+        GridBagConstraints gbs = new GridBagConstraints();
+        gbs.gridx = 0;
+        gbs.insets = new Insets(10,0,10,0);
+
+        // set position of items
+        gbs.gridy = 0;
+        add(topImage,gbs);
+        gbs.gridy = 1;
+        add(usernameLabel,gbs);
+        gbs.gridy = 2;
+        add(usernameField,gbs);
+        gbs.gridy = 3;
+        add(passwordLabel,gbs);
+        gbs.gridy = 4;
+        add(passwordField,gbs);
+        gbs.gridy = 5;
+        add(loginButton,gbs);
+        gbs.gridy = 6;
+        add(status,gbs);
 
         setVisible(true);
     }

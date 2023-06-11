@@ -192,3 +192,5 @@ In the LiveShare App, several classes are used to manage the different component
 This software is truly a powerful tool for reducing traffic in companies, organizations, and universities.
 It can significantly reduce the outgoing traffic volume from these institutions. Additionally, by encrypting data and transmitting it within the internal network, this software prevents data leakage outside the network and unauthorized access to this information.
 As a result, both the security and speed of data transmission within the network are improved.
+
+thanks for reading if you have any idea to developed this project send pull request.

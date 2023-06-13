@@ -22,6 +22,7 @@ public class Chatroom extends JFrame {
         setTitle("Chatroom - Room #" + roomID);
         setSize(400, 300);
         setLocationRelativeTo(null);
+        setIconImage(new ImageIcon("D:\\Projects\\JAVA learn\\LiveShare\\client\\Image\\3845868.png").getImage());
 
         // Create the chat area
         chatArea = new JTextArea();
